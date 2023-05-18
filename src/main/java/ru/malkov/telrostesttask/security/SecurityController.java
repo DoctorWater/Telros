@@ -1,27 +1,29 @@
 package ru.malkov.telrostesttask.security;
 
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import ru.malkov.telrostesttask.dto.AuthDto;
 
 @RestController
+
 public class SecurityController {
-    AuthenticationProvider authenticationProvider;
+    AuthenticationManager authenticationManager;
 
 
-    public SecurityController(AuthenticationProvider authenticationProvider) {
-        this.authenticationProvider = authenticationProvider;
+    public SecurityController(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping(value = "/login")
     public void authenticate(@RequestBody AuthDto dto){
-      authenticationProvider.authenticate(new UsernamePasswordAuthenticationToken(dto.username(),dto.password()));
+      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.username(),dto.password()));
+    }
+
+    @GetMapping(value = "/login/check")
+    public Authentication check(){
+        return SecurityContextHolder.getContext().getAuthentication();
     }
 }

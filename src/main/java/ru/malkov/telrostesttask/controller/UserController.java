@@ -1,6 +1,5 @@
 package ru.malkov.telrostesttask.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ru.malkov.telrostesttask.dto.UserContactInfoDto;
 import ru.malkov.telrostesttask.dto.UserDto;
@@ -31,14 +30,14 @@ public class UserController {
         this.userMapper = userMapper;
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    
     @GetMapping(value = "/info/get")
     public UserContactInfoDto getContactInfo(Long id) {
         User user = userService.getById(id);
         return new UserContactInfoDto(user.getPhoneNumber(), user.getEmail());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    
     @PatchMapping(value = "/info/update")
     public String updateByDto(UserContactInfoDto dto, Long id) {
         User user = userService.getById(id);
@@ -46,7 +45,7 @@ public class UserController {
         return "Updated successfully";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    
     @PatchMapping(value = "/info/delete")
     public String deleteContactInfo(Long id) {
         UserContactInfoDto dto = new UserContactInfoDto(null, null);
@@ -55,19 +54,19 @@ public class UserController {
         return "Updated successfully";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    
     @GetMapping(value = "/get/one")
     public User get(@RequestParam Long id) {
         return userService.getById(id);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    
     @GetMapping(value = "/get/list")
     public List<User> get(@RequestParam List<Long> ids) {
         return userService.getById(ids);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    
     @PostMapping(value = "/save")
     public String save(@RequestBody UserDto user) {
         if (userService.save(userMapper.toUser(user))) {
@@ -76,14 +75,14 @@ public class UserController {
         return "Something went wrong during saving the user";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    
     @DeleteMapping(value = "/delete/one")
     public String delete(@RequestParam Long id) {
         userService.delete(id);
         return "Deleted successfully";
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    
     @DeleteMapping(value = "/delete/list")
     public String delete(@RequestParam List<Long> ids) {
         userService.delete(ids);

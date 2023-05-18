@@ -1,6 +1,6 @@
 package ru.malkov.telrostesttask.security;
 
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -12,12 +12,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthenticationProviderImpl implements AuthenticationProvider {
-
+public class AuthenticationManagerImpl implements AuthenticationManager {
     private final UserDetailsService userDetailsService;
     private final BCryptPasswordEncoder encoder;
 
-    public AuthenticationProviderImpl(UserDetailsService userDetailsService, BCryptPasswordEncoder encoder) {
+    public AuthenticationManagerImpl(UserDetailsService userDetailsService, BCryptPasswordEncoder encoder) {
         this.userDetailsService = userDetailsService;
         this.encoder = encoder;
     }
@@ -43,10 +42,5 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
         Authentication authenticatedUser = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
         return authenticatedUser;
-    }
-
-    @Override
-    public boolean supports(Class<?> authentication) {
-        return false;
     }
 }
