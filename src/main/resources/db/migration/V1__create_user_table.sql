@@ -1,4 +1,4 @@
-create table "TelrosTestDB"."telrosUserSchema"."user"
+create table "TelrosTestDB".telros_user_schema."user"
 (
     id           bigserial
         constraint user_pk
@@ -10,5 +10,5 @@ create table "TelrosTestDB"."telrosUserSchema"."user"
     email        varchar(100)
 );
 
-alter table "TelrosTestDB"."telrosUserSchema"."user"
+alter table "TelrosTestDB".telros_user_schema."user"
     owner to postgres;

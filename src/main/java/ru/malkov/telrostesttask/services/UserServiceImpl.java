@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Service
 public class UserServiceImpl implements UserService {
+
     private final UserRepository repository;
 
     public UserServiceImpl(@Autowired UserRepository repository) {
@@ -57,7 +58,8 @@ public class UserServiceImpl implements UserService {
     public boolean save(User user) {
         try {
             if (user == null) {
-                throw new IllegalArgumentException("Given user is null");   //By some reason throwing of IllegalArgumentException in repository.save() doesn't work.
+                throw new IllegalArgumentException(
+                        "Given user is null");   //By some reason throwing of IllegalArgumentException in repository.save() doesn't work.
             }
             repository.save(user);
             return true;

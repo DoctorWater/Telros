@@ -16,7 +16,9 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(catalog = "TelrosTestDB", schema = "telros_user_schema", name = "user")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -33,18 +35,37 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User user)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof User user)) {
+            return false;
+        }
 
-        if (getUser_id() != null ? !getUser_id().equals(user.getUser_id()) : user.getUser_id() != null) return false;
-        if (getName() != null ? !getName().equals(user.getName()) : user.getName() != null) return false;
-        if (getSurname() != null ? !getSurname().equals(user.getSurname()) : user.getSurname() != null) return false;
-        if (getSecondName() != null ? !getSecondName().equals(user.getSecondName()) : user.getSecondName() != null)
+        if (getUser_id() != null ? !getUser_id().equals(user.getUser_id())
+                : user.getUser_id() != null) {
             return false;
-        if (getDateOfBirth() != null ? !getDateOfBirth().equals(user.getDateOfBirth()) : user.getDateOfBirth() != null)
+        }
+        if (getName() != null ? !getName().equals(user.getName()) : user.getName() != null) {
             return false;
-        if (getEmail() != null ? !getEmail().equals(user.getEmail()) : user.getEmail() != null) return false;
-        return getPhoneNumber() != null ? getPhoneNumber().equals(user.getPhoneNumber()) : user.getPhoneNumber() == null;
+        }
+        if (getSurname() != null ? !getSurname().equals(user.getSurname())
+                : user.getSurname() != null) {
+            return false;
+        }
+        if (getSecondName() != null ? !getSecondName().equals(user.getSecondName())
+                : user.getSecondName() != null) {
+            return false;
+        }
+        if (getDateOfBirth() != null ? !getDateOfBirth().equals(user.getDateOfBirth())
+                : user.getDateOfBirth() != null) {
+            return false;
+        }
+        if (getEmail() != null ? !getEmail().equals(user.getEmail()) : user.getEmail() != null) {
+            return false;
+        }
+        return getPhoneNumber() != null ? getPhoneNumber().equals(user.getPhoneNumber())
+                : user.getPhoneNumber() == null;
     }
 
     @Override

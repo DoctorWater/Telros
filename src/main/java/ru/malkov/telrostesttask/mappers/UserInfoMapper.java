@@ -13,6 +13,7 @@ import ru.malkov.telrostesttask.entities.User;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserInfoMapper {
+
     @Mapping(target = "user_id", ignore = true)
     @Mapping(target = "surname", ignore = true)
     @Mapping(target = "secondName", ignore = true)
