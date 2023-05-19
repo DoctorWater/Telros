@@ -12,7 +12,6 @@ import ru.malkov.telrostesttask.dto.UserContactInfoDto;
 import ru.malkov.telrostesttask.dto.UserDto;
 import ru.malkov.telrostesttask.entities.User;
 import ru.malkov.telrostesttask.mappers.UserInfoMapper;
-import ru.malkov.telrostesttask.mappers.UserMapper;
 import ru.malkov.telrostesttask.services.UserServiceImpl;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -33,8 +32,6 @@ class UserControllerTest {
     UserServiceImpl userService;
     @Autowired
     UserInfoMapper infoMapper;
-    @Autowired
-    UserMapper userMapper;
     UserController controller;
     private User dummy1;
     private User dummy2;
@@ -46,7 +43,7 @@ class UserControllerTest {
         dummy2 = new User(2L, "Andrey", "Ivanov", "Olegovich", LocalDate.of(1989, 4, 11), "nothing2@gmail.com", "+79110000000");
         Mockito.when(userService.getById(1L)).thenReturn(dummy1);
         Mockito.when(userService.getById(2L)).thenReturn(dummy2);
-        controller = new UserController(userService, infoMapper, userMapper);
+        controller = new UserController(userService, infoMapper);
     }
 
     @Test
@@ -88,29 +85,25 @@ class UserControllerTest {
     }
 
     @Test
-    void save() {
+    void save_successful() {
         Mockito.when(userService.save(any(User.class))).thenReturn(true);
 
-        String message = controller.save(new UserDto("John", "Doe", "Alister", LocalDate.of(2002, 1, 22), "nothing1@gmail.com", "+79110000000"));
+        String message = controller.save(dummy1);
 
         assertThat(message, containsString("Saved successfully"));
     }
 
     @Test
     void delete_one_successful() {
-        Mockito.doNothing().when(userService).delete(any(Long.class));
+        String message = controller.delete(1L);
 
-        controller.delete(123L);
-
-        Mockito.verify(userService, Mockito.times(1)).delete(123L);
+        assertThat(message, containsString("Deleted successfully"));
     }
 
     @Test
     void delete_many_successful() {
-        Mockito.doNothing().when(userService).delete(Mockito.<ArrayList<Long>>any());
+        String message = controller.delete(new ArrayList<>(Arrays.asList(1L, 2L)));
 
-        controller.delete(new ArrayList<>(Arrays.asList(1L, 2L)));
-
-        Mockito.verify(userService, Mockito.times(1)).delete(Arrays.asList(1L, 2L));
+        assertThat(message, containsString("Deleted successfully"));
     }
 }

@@ -1,5 +1,6 @@
 package ru.malkov.telrostesttask.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,13 +17,14 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(catalog = "TelrosTestDB", schema = "telros_user_schema", name = "user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Long user_id;
+    private Long userId;
     private String name;
     private String surname;
     @Column(name = "second_name")
@@ -42,8 +44,8 @@ public class User {
             return false;
         }
 
-        if (getUser_id() != null ? !getUser_id().equals(user.getUser_id())
-                : user.getUser_id() != null) {
+        if (getUserId() != null ? !getUserId().equals(user.getUserId())
+                : user.getUserId() != null) {
             return false;
         }
         if (getName() != null ? !getName().equals(user.getName()) : user.getName() != null) {
@@ -70,7 +72,7 @@ public class User {
 
     @Override
     public int hashCode() {
-        int result = getUser_id() != null ? getUser_id().hashCode() : 0;
+        int result = getUserId() != null ? getUserId().hashCode() : 0;
         result = 31 * result + (getName() != null ? getName().hashCode() : 0);
         result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0);
         result = 31 * result + (getSecondName() != null ? getSecondName().hashCode() : 0);
@@ -83,7 +85,7 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "user_id=" + user_id +
+                "user_id=" + userId +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", secondName='" + secondName + '\'' +

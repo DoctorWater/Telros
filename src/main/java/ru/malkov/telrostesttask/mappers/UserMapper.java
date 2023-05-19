@@ -14,6 +14,6 @@ import ru.malkov.telrostesttask.entities.User;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
 
-    @Mapping(target = "user_id", ignore = true)
+    @Mapping(target = "userId", ignore = true)
     User toUser(UserDto dto);
 }

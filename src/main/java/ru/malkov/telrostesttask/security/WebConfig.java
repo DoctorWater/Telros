@@ -24,6 +24,13 @@ public class WebConfig {
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     * I've chosen BaseAuth, because OAuth2 has multiply different standards
+     * and is not applicable for small products, like this one.
+     * @param http -- bean of {@link HttpSecurity} class
+     * @return settings for security filter
+     * @throws Exception can be thrown by .build() and .csrf()
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf()

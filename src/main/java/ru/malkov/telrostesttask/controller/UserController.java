@@ -5,7 +5,6 @@ import ru.malkov.telrostesttask.dto.UserContactInfoDto;
 import ru.malkov.telrostesttask.dto.UserDto;
 import ru.malkov.telrostesttask.entities.User;
 import ru.malkov.telrostesttask.mappers.UserInfoMapper;
-import ru.malkov.telrostesttask.mappers.UserMapper;
 import ru.malkov.telrostesttask.services.UserService;
 
 import java.util.List;
@@ -22,35 +21,35 @@ public class UserController {
 
     private final UserService userService;
     private final UserInfoMapper infoMapper;
-    private final UserMapper userMapper;
 
-    public UserController(UserService userService, UserInfoMapper infoMapper, UserMapper userMapper) {
+    public UserController(UserService userService, UserInfoMapper infoMapper) {
         this.userService = userService;
         this.infoMapper = infoMapper;
-        this.userMapper = userMapper;
     }
 
     
     @GetMapping(value = "/info/get")
-    public UserContactInfoDto getContactInfo(Long id) {
+    public UserContactInfoDto getContactInfo(@RequestParam Long id) {
         User user = userService.getById(id);
         return new UserContactInfoDto(user.getPhoneNumber(), user.getEmail());
     }
 
     
     @PatchMapping(value = "/info/update")
-    public String updateByDto(UserContactInfoDto dto, Long id) {
+    public String updateByDto(@RequestBody UserContactInfoDto dto, @RequestParam Long id) {
         User user = userService.getById(id);
         infoMapper.updateUserFromInfoDto(dto, user);
+        userService.save(user);
         return "Updated successfully";
     }
 
     
     @PatchMapping(value = "/info/delete")
-    public String deleteContactInfo(Long id) {
+    public String deleteContactInfo(@RequestParam Long id) {
         UserContactInfoDto dto = new UserContactInfoDto(null, null);
         User user = userService.getById(id);
         infoMapper.updateUserFromInfoDto(dto, user);
+        userService.save(user);
         return "Updated successfully";
     }
 
@@ -68,8 +67,8 @@ public class UserController {
 
     
     @PostMapping(value = "/save")
-    public String save(@RequestBody UserDto user) {
-        if (userService.save(userMapper.toUser(user))) {
+    public String save(@RequestBody User user) {
+        if (userService.save(user)) {
             return "Saved successfully";
         }
         return "Something went wrong during saving the user";
@@ -78,14 +77,18 @@ public class UserController {
     
     @DeleteMapping(value = "/delete/one")
     public String delete(@RequestParam Long id) {
-        userService.delete(id);
-        return "Deleted successfully";
+        if(userService.delete(id)){
+            return "Deleted successfully";
+        }
+        return "Something went wrong during deleting the user";
     }
 
     
     @DeleteMapping(value = "/delete/list")
     public String delete(@RequestParam List<Long> ids) {
-        userService.delete(ids);
-        return "Deleted successfully";
+        if(userService.delete(ids)) {
+            return "Deleted successfully";
+        }
+        return "Something went wrong during deleting the user";
     }
 }

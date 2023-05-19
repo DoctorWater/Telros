@@ -74,8 +74,13 @@ public class UserServiceImpl implements UserService {
      * @param id -- id of the required user
      */
     @Override
-    public void delete(Long id) {
-        repository.deleteById(id);
+    public boolean delete(Long id) {
+        try {
+            repository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /**
@@ -84,9 +89,14 @@ public class UserServiceImpl implements UserService {
      * @param ids --      * @param ids -- list of ids of the required users
      */
     @Override
-    public void delete(List<Long> ids) {
-        for (Long id : ids) {
-            repository.deleteById(id);
+    public boolean delete(List<Long> ids) {
+        try {
+            for (Long id : ids) {
+                repository.deleteById(id);
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
         }
 
     }
